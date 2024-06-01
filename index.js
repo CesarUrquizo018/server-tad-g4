@@ -29,7 +29,8 @@ app.use('/api/miembros_proyecto', miembrosProyectoRoutes);
 app.use('/api/solicitudes', solicitudRoutes);
 app.use('/api/estado_solicitudes', estadoSolicitudRoutes);
 
-const PORT = process.env.PORT || 3000;
+//const PORT = process.env.PORT || 3000;
+const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`App listening at http://localhost:${PORT}`);
 });
