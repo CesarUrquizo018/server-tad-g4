@@ -1,3 +1,4 @@
+//src/models/model_anotacion
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const Usuario = require('./model_usuario');

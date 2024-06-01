@@ -1,3 +1,4 @@
+//src/routes/routes_otro
 const express = require('express');
 const router = express.Router();
 const otroControllers = require('../controllers/controllers_otro');

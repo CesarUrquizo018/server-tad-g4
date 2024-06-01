@@ -1,3 +1,4 @@
+//src/controllers_usuario
 const Usuario = require('../models/model_usuario');
 const bcrypt = require('bcrypt');
 

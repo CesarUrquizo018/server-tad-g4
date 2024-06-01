@@ -1,5 +1,6 @@
 const Proyecto = require('../models/model_proyecto');
 const Usuario = require('../models/model_usuario');
+const MiembrosProyecto = require('../models/model_miembros_proyecto');
 
 const proyectoController = {
     // Obtener todos los proyectos (para HomePage)
@@ -56,6 +57,7 @@ const proyectoController = {
     createProyecto: async (req, res) => {
         try {
             const proyecto = await Proyecto.create(req.body);
+            await MiembrosProyecto.create({ id_usuario: req.body.id_usuario, id_proyecto: proyecto.id_proyecto });
             res.status(201).json(proyecto);
         } catch (error) {
             console.error('Error al crear el proyecto:', error);
@@ -95,7 +97,6 @@ const proyectoController = {
             res.status(500).send({ message: 'Error al eliminar el proyecto' });
         }
     },
-
 };
 
 module.exports = proyectoController;

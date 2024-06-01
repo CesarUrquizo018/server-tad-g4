@@ -1,3 +1,4 @@
+//src/models/model_fuente
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const Proyecto = require('./model_proyecto');
