@@ -15,6 +15,10 @@ const estadoSolicitudRoutes = require('./src/routes/routes_estado_solicitud');
 const app = express();
 app.use(cors());
 
+app.get('/', (req, res) => {
+  res.send('Servidor Funcionando!');
+});
+
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/proyectos', proyectoRoutes);
 app.use('/api/auth', authRoutes);
