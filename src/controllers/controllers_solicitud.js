@@ -1,3 +1,4 @@
+// src/controllers/controllers_solicitud.js
 const Solicitud = require('../models/model_solicitud');
 const MiembrosProyecto = require('../models/model_miembros_proyecto');
 
@@ -42,7 +43,6 @@ const solicitudController = {
             if (solicitud) {
                 await solicitud.update(req.body);
 
-                // Si el estado de la solicitud es "aceptado", agregar a miembros_proyecto
                 if (req.body.id_estado === 2) { // Suponiendo que 2 es el ID del estado "aceptado"
                     await MiembrosProyecto.create({ id_usuario: solicitud.id_usuario, id_proyecto: solicitud.id_proyecto });
                 }
@@ -82,6 +82,40 @@ const solicitudController = {
         } catch (error) {
             console.error('Error al obtener las solicitudes:', error);
             res.status(500).send({ message: 'Error al obtener las solicitudes' });
+        }
+    },
+
+    acceptSolicitud: async (req, res) => {
+        try {
+            const solicitud = await Solicitud.findByPk(req.params.id);
+            if (solicitud) {
+                await solicitud.update({ id_estado: 2 }); // Suponiendo que 2 es el estado aceptado
+                await MiembrosProyecto.create({
+                    id_usuario: solicitud.id_usuario,
+                    id_proyecto: solicitud.id_proyecto,
+                });
+                res.json({ message: 'Solicitud aceptada' });
+            } else {
+                res.status(404).send({ message: 'Solicitud no encontrada' });
+            }
+        } catch (error) {
+            console.error('Error al aceptar la solicitud:', error);
+            res.status(500).send({ message: 'Error al aceptar la solicitud' });
+        }
+    },
+
+    rejectSolicitud: async (req, res) => {
+        try {
+            const solicitud = await Solicitud.findByPk(req.params.id);
+            if (solicitud) {
+                await solicitud.update({ id_estado: 3 }); // Suponiendo que 3 es el estado rechazado
+                res.json({ message: 'Solicitud rechazada' });
+            } else {
+                res.status(404).send({ message: 'Solicitud no encontrada' });
+            }
+        } catch (error) {
+            console.error('Error al rechazar la solicitud:', error);
+            res.status(500).send({ message: 'Error al rechazar la solicitud' });
         }
     }
 };

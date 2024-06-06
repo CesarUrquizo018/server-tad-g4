@@ -55,7 +55,7 @@ const otroController = {
     deleteOtro: async (req, res) => {
         try {
             const result = await Otro.destroy({
-                where: { id_otros: req.params.id }
+                where: { id_otro: req.params.id }
             });
             if (result) {
                 res.send({ message: 'Otro eliminado' });
@@ -66,7 +66,7 @@ const otroController = {
             console.error('Error al eliminar el otro:', error);
             res.status(500).send({ message: 'Error al eliminar el otro' });
         }
-    },
+    },    
 
     getOtrosByProyectoId: async (req, res) => {
         try {

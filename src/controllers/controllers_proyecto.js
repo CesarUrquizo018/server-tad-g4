@@ -35,23 +35,23 @@ const proyectoController = {
 
     // Obtener proyectos por Usuario (para MyProjectsPage)
     getProyectosByUsuario: async (req, res) => {
-        const { usuarioId } = req.params;  // Usar params en lugar de body para un GET
-
+        const { usuarioId } = req.params;
+    
         if (!usuarioId) {
             return res.status(400).json({ message: 'ID de usuario no proporcionado.' });
         }
-
+    
         try {
             const proyectos = await Proyecto.findAll({
                 where: { id_usuario: usuarioId }
             });
-
+    
             return res.status(200).json(proyectos);
         } catch (error) {
             console.error('Error al obtener los proyectos:', error);
             return res.status(500).json({ message: 'Error al obtener los proyectos.' });
         }
-    },
+    },    
 
     // Crear proyecto (para MyProjectsPage)
     createProyecto: async (req, res) => {

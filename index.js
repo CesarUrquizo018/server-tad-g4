@@ -14,6 +14,7 @@ const estadoSolicitudRoutes = require('./src/routes/routes_estado_solicitud');
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('Servidor Funcionando!');

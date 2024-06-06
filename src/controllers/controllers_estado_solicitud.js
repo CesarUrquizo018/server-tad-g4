@@ -1,3 +1,4 @@
+//src/controllers/controllers_controllers_estado_solicitud.js
 const EstadoSolicitud = require('../models/model_estado_solicitud');
 
 const estadoSolicitudController = {

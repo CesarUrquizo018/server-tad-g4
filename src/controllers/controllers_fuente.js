@@ -55,7 +55,7 @@ const fuenteController = {
     deleteFuente: async (req, res) => {
         try {
             const result = await Fuente.destroy({
-                where: { id_fuentes: req.params.id }
+                where: { id_fuente: req.params.id }
             });
             if (result) {
                 res.send({ message: 'Fuente eliminada' });
@@ -66,7 +66,7 @@ const fuenteController = {
             console.error('Error al eliminar la fuente:', error);
             res.status(500).send({ message: 'Error al eliminar la fuente' });
         }
-    },
+    },    
 
     //obtener fuentes segun el id del proyecto
     getFuentesByProyectoId: async (req, res) => {

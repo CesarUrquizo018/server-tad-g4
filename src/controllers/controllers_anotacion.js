@@ -55,7 +55,7 @@ const anotacionController = {
     deleteAnotacion: async (req, res) => {
         try {
             const result = await Anotacion.destroy({
-                where: { id_anotaciones: req.params.id }
+                where: { id_anotacion: req.params.id }
             });
             if (result) {
                 res.send({ message: 'Anotación eliminada' });
@@ -67,6 +67,7 @@ const anotacionController = {
             res.status(500).send({ message: 'Error al eliminar la anotación' });
         }
     },
+    
 
     getAnotacionesByProyectoId: async (req, res) => {
         try {
