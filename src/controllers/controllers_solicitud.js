@@ -5,7 +5,9 @@ const MiembrosProyecto = require('../models/model_miembros_proyecto');
 const solicitudController = {
     getAllSolicitudes: async (req, res) => {
         try {
-            const solicitudes = await Solicitud.findAll();
+            const solicitudes = await Solicitud.findAll({
+                include: [{ model: Proyecto }]
+            });
             res.json(solicitudes);
         } catch (error) {
             console.error('Error al obtener solicitudes:', error);
@@ -29,8 +31,29 @@ const solicitudController = {
 
     createSolicitud: async (req, res) => {
         try {
-            const solicitud = await Solicitud.create(req.body);
-            res.status(201).json(solicitud);
+            const { id_usuario, id_proyecto, mensaje } = req.body;
+            const solicitud = await Solicitud.create({
+                id_usuario,
+                id_proyecto,
+                id_estado: 1,
+                fecha_solicitud: new Date().toISOString().slice(0, 10),
+                mensaje
+            });
+
+            const proyecto = await Proyecto.findByPk(id_proyecto);
+            if (proyecto) {
+                res.status(201).json({
+                    id_solicitud: solicitud.id_solicitud,
+                    id_usuario: solicitud.id_usuario,
+                    id_proyecto: solicitud.id_proyecto,
+                    proyecto_titulo: proyecto.titulo,
+                    id_estado: solicitud.id_estado,
+                    fecha_solicitud: solicitud.fecha_solicitud,
+                    mensaje: solicitud.mensaje
+                });
+            } else {
+                res.status(404).json({ message: 'Proyecto no encontrado' });
+            }
         } catch (error) {
             console.error('Error al crear la solicitud:', error);
             res.status(500).send({ message: 'Error al crear la solicitud' });
