@@ -1,6 +1,7 @@
 // src/controllers/controllers_solicitud.js
 const Solicitud = require('../models/model_solicitud');
 const MiembrosProyecto = require('../models/model_miembros_proyecto');
+const Proyecto = require('../models/model_proyecto');
 
 const solicitudController = {
     getAllSolicitudes: async (req, res) => {
@@ -31,29 +32,22 @@ const solicitudController = {
 
     createSolicitud: async (req, res) => {
         try {
-            const { id_usuario, id_proyecto, mensaje } = req.body;
+            const { id_remitente, id_proyecto, mensaje } = req.body;
+            const proyecto = await Proyecto.findByPk(id_proyecto);
+            if (!proyecto) {
+                return res.status(404).json({ message: 'Proyecto no encontrado' });
+            }
+
             const solicitud = await Solicitud.create({
-                id_usuario,
+                id_remitente,
+                id_receptor: proyecto.id_usuario, // Asumiendo que el propietario del proyecto es el receptor
                 id_proyecto,
                 id_estado: 1,
                 fecha_solicitud: new Date().toISOString().slice(0, 10),
                 mensaje
             });
 
-            const proyecto = await Proyecto.findByPk(id_proyecto);
-            if (proyecto) {
-                res.status(201).json({
-                    id_solicitud: solicitud.id_solicitud,
-                    id_usuario: solicitud.id_usuario,
-                    id_proyecto: solicitud.id_proyecto,
-                    proyecto_titulo: proyecto.titulo,
-                    id_estado: solicitud.id_estado,
-                    fecha_solicitud: solicitud.fecha_solicitud,
-                    mensaje: solicitud.mensaje
-                });
-            } else {
-                res.status(404).json({ message: 'Proyecto no encontrado' });
-            }
+            res.status(201).json(solicitud);
         } catch (error) {
             console.error('Error al crear la solicitud:', error);
             res.status(500).send({ message: 'Error al crear la solicitud' });
@@ -67,7 +61,7 @@ const solicitudController = {
                 await solicitud.update(req.body);
 
                 if (req.body.id_estado === 2) { // Suponiendo que 2 es el ID del estado "aceptado"
-                    await MiembrosProyecto.create({ id_usuario: solicitud.id_usuario, id_proyecto: solicitud.id_proyecto });
+                    await MiembrosProyecto.create({ id_usuario: solicitud.id_remitente, id_proyecto: solicitud.id_proyecto });
                 }
 
                 res.json(solicitud);
@@ -114,7 +108,7 @@ const solicitudController = {
             if (solicitud) {
                 await solicitud.update({ id_estado: 2 }); // Suponiendo que 2 es el estado aceptado
                 await MiembrosProyecto.create({
-                    id_usuario: solicitud.id_usuario,
+                    id_usuario: solicitud.id_remitente,
                     id_proyecto: solicitud.id_proyecto,
                 });
                 res.json({ message: 'Solicitud aceptada' });
@@ -139,6 +133,32 @@ const solicitudController = {
         } catch (error) {
             console.error('Error al rechazar la solicitud:', error);
             res.status(500).send({ message: 'Error al rechazar la solicitud' });
+        }
+    },
+
+    obtenerSolicitudesRecibidas: async (req, res) => {
+        try {
+            const solicitudes = await Solicitud.findAll({
+                where: { id_receptor: req.user.id_usuario },
+                include: [{ model: Proyecto }]
+            });
+            res.json(solicitudes);
+        } catch (error) {
+            console.error('Error al obtener solicitudes recibidas:', error);
+            res.status(500).send({ message: 'Error al obtener solicitudes recibidas' });
+        }
+    },
+
+    obtenerSolicitudesEnviadas: async (req, res) => {
+        try {
+            const solicitudes = await Solicitud.findAll({
+                where: { id_remitente: req.user.id_usuario },
+                include: [{ model: Proyecto }]
+            });
+            res.json(solicitudes);
+        } catch (error) {
+            console.error('Error al obtener solicitudes enviadas:', error);
+            res.status(500).send({ message: 'Error al obtener solicitudes enviadas' });
         }
     }
 };

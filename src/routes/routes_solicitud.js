@@ -13,5 +13,7 @@ router.delete('/:id', auth, solicitudControllers.deleteSolicitud);
 router.get('/proyecto/:id_proyecto', auth, solicitudControllers.getSolicitudesByProyectoId);
 router.post('/:id/accept', auth, solicitudControllers.acceptSolicitud);  // Nueva ruta para aceptar solicitud
 router.post('/:id/reject', auth, solicitudControllers.rejectSolicitud);  // Nueva ruta para rechazar solicitud
+router.get('/recibidas', auth, solicitudControllers.obtenerSolicitudesRecibidas); // Nueva ruta para obtener solicitudes recibidas
+router.get('/enviadas', auth, solicitudControllers.obtenerSolicitudesEnviadas); // Nueva ruta para obtener solicitudes enviadas
 
 module.exports = router;

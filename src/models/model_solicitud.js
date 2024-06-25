@@ -12,7 +12,14 @@ Solicitud.init({
         primaryKey: true,
         autoIncrement: true
     },
-    id_usuario: {
+    id_remitente: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Usuario,
+            key: 'id_usuario'
+        }
+    },
+    id_receptor: {
         type: DataTypes.INTEGER,
         references: {
             model: Usuario,
@@ -42,7 +49,8 @@ Solicitud.init({
     timestamps: false
 });
 
-Solicitud.belongsTo(Usuario, { foreignKey: 'id_usuario' });
+Solicitud.belongsTo(Usuario, { foreignKey: 'id_remitente', as: 'remitente' });
+Solicitud.belongsTo(Usuario, { foreignKey: 'id_receptor', as: 'receptor' });
 Solicitud.belongsTo(Proyecto, { foreignKey: 'id_proyecto' });
 Solicitud.belongsTo(EstadoSolicitud, { foreignKey: 'id_estado' });
 
