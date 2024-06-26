@@ -24,7 +24,7 @@ Proyecto.init({
     timestamps: false
 });
 
-Proyecto.belongsTo(Usuario, { foreignKey: 'id_usuario' });
+Proyecto.belongsTo(Usuario, { as: 'creador', foreignKey: 'id_usuario' });
 Proyecto.belongsToMany(Usuario, { through: 'MiembrosProyecto', foreignKey: 'id_proyecto' });
 
 module.exports = Proyecto;

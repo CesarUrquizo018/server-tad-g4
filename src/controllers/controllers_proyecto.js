@@ -7,7 +7,13 @@ const proyectoController = {
     getAllProyectos: async (req, res) => {
         try {
             const proyectos = await Proyecto.findAll({
-                include: [Usuario]
+                include: [
+                    {
+                        model: Usuario,
+                        as: 'creador', // Esto debe coincidir con la asociación definida en el modelo
+                        attributes: ['nombre'] // Incluir solo el campo necesario
+                    }
+                ]
             });
             res.json(proyectos);
         } catch (error) {
@@ -20,7 +26,13 @@ const proyectoController = {
     getProyectoById: async (req, res) => {
         try {
             const proyecto = await Proyecto.findByPk(req.params.id, {
-                include: [Usuario]
+                include: [
+                    {
+                        model: Usuario,
+                        as: 'creador', // Esto debe coincidir con la asociación definida en el modelo
+                        attributes: ['nombre'] // Incluir solo el campo necesario
+                    }
+                ]
             });
             if (proyecto) {
                 res.json(proyecto);
