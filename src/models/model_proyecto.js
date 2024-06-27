@@ -1,4 +1,3 @@
-//src/models/model_proyecto
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const Usuario = require('./model_usuario');
