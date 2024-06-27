@@ -10,6 +10,7 @@ const solicitudController = {
                 include: [
                     {
                         model: Proyecto,
+                        as: 'proyecto',
                         include: [{ model: Usuario, as: 'creador', attributes: ['nombre'] }]
                     },
                     { model: Usuario, as: 'remitente', attributes: ['nombre'] },
@@ -29,6 +30,7 @@ const solicitudController = {
                 include: [
                     {
                         model: Proyecto,
+                        as: 'proyecto',
                         include: [{ model: Usuario, as: 'creador', attributes: ['nombre'] }]
                     },
                     { model: Usuario, as: 'remitente', attributes: ['nombre'] },
@@ -56,7 +58,7 @@ const solicitudController = {
 
             const solicitud = await Solicitud.create({
                 id_remitente,
-                id_receptor: proyecto.id_usuario, // Asumiendo que el propietario del proyecto es el receptor
+                id_receptor: proyecto.id_usuario,
                 id_proyecto,
                 id_estado: 1,
                 fecha_solicitud: new Date().toISOString().slice(0, 10),
@@ -76,7 +78,7 @@ const solicitudController = {
             if (solicitud) {
                 await solicitud.update(req.body);
 
-                if (req.body.id_estado === 2) { // Suponiendo que 2 es el ID del estado "aceptado"
+                if (req.body.id_estado === 2) {
                     await MiembrosProyecto.create({ id_usuario: solicitud.id_remitente, id_proyecto: solicitud.id_proyecto });
                 }
 
@@ -113,6 +115,7 @@ const solicitudController = {
                 include: [
                     {
                         model: Proyecto,
+                        as: 'proyecto',
                         include: [{ model: Usuario, as: 'creador', attributes: ['nombre'] }]
                     },
                     { model: Usuario, as: 'remitente', attributes: ['nombre'] },
@@ -130,7 +133,7 @@ const solicitudController = {
         try {
             const solicitud = await Solicitud.findByPk(req.params.id);
             if (solicitud) {
-                await solicitud.update({ id_estado: 2 }); // Suponiendo que 2 es el estado aceptado
+                await solicitud.update({ id_estado: 2 });
                 await MiembrosProyecto.create({
                     id_usuario: solicitud.id_remitente,
                     id_proyecto: solicitud.id_proyecto,
@@ -149,7 +152,7 @@ const solicitudController = {
         try {
             const solicitud = await Solicitud.findByPk(req.params.id);
             if (solicitud) {
-                await solicitud.update({ id_estado: 3 }); // Suponiendo que 3 es el estado rechazado
+                await solicitud.update({ id_estado: 3 });
                 res.json({ message: 'Solicitud rechazada' });
             } else {
                 res.status(404).send({ message: 'Solicitud no encontrada' });
@@ -167,6 +170,7 @@ const solicitudController = {
                 include: [
                     {
                         model: Proyecto,
+                        as: 'proyecto',
                         include: [{ model: Usuario, as: 'creador', attributes: ['nombre'] }]
                     },
                     { model: Usuario, as: 'remitente', attributes: ['nombre'] },
@@ -187,6 +191,7 @@ const solicitudController = {
                 include: [
                     {
                         model: Proyecto,
+                        as: 'proyecto',
                         include: [{ model: Usuario, as: 'creador', attributes: ['nombre'] }]
                     },
                     { model: Usuario, as: 'remitente', attributes: ['nombre'] },
