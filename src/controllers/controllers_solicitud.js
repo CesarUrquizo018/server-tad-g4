@@ -8,7 +8,12 @@ const solicitudController = {
         try {
             const solicitudes = await Solicitud.findAll({
                 include: [
-                    { model: Proyecto, attributes: ['titulo'] },
+                    {
+                        model: Proyecto,
+                        as: 'proyecto',
+                        attributes: ['titulo'],
+                        include: [{ model: Usuario, as: 'creador', attributes: ['nombre'] }]
+                    },
                     { model: Usuario, as: 'remitente', attributes: ['nombre'] },
                     { model: Usuario, as: 'receptor', attributes: ['nombre'] }
                 ]
@@ -24,7 +29,12 @@ const solicitudController = {
         try {
             const solicitud = await Solicitud.findByPk(req.params.id, {
                 include: [
-                    { model: Proyecto, attributes: ['titulo'] },
+                    {
+                        model: Proyecto,
+                        as: 'proyecto',
+                        attributes: ['titulo'],
+                        include: [{ model: Usuario, as: 'creador', attributes: ['nombre'] }]
+                    },
                     { model: Usuario, as: 'remitente', attributes: ['nombre'] },
                     { model: Usuario, as: 'receptor', attributes: ['nombre'] }
                 ]
@@ -105,7 +115,12 @@ const solicitudController = {
             const solicitudes = await Solicitud.findAll({
                 where: { id_proyecto: req.params.id_proyecto },
                 include: [
-                    { model: Proyecto, attributes: ['titulo'] },
+                    {
+                        model: Proyecto,
+                        as: 'proyecto',
+                        attributes: ['titulo'],
+                        include: [{ model: Usuario, as: 'creador', attributes: ['nombre'] }]
+                    },
                     { model: Usuario, as: 'remitente', attributes: ['nombre'] },
                     { model: Usuario, as: 'receptor', attributes: ['nombre'] }
                 ]
@@ -156,7 +171,12 @@ const solicitudController = {
             const solicitudes = await Solicitud.findAll({
                 where: { id_receptor: req.user.id_usuario },
                 include: [
-                    { model: Proyecto, attributes: ['titulo'] },
+                    {
+                        model: Proyecto,
+                        as: 'proyecto',
+                        attributes: ['titulo'],
+                        include: [{ model: Usuario, as: 'creador', attributes: ['nombre'] }]
+                    },
                     { model: Usuario, as: 'remitente', attributes: ['nombre'] },
                     { model: Usuario, as: 'receptor', attributes: ['nombre'] }
                 ]
@@ -173,7 +193,12 @@ const solicitudController = {
             const solicitudes = await Solicitud.findAll({
                 where: { id_remitente: req.user.id_usuario },
                 include: [
-                    { model: Proyecto, attributes: ['titulo'] },
+                    {
+                        model: Proyecto,
+                        as: 'proyecto',
+                        attributes: ['titulo'],
+                        include: [{ model: Usuario, as: 'creador', attributes: ['nombre'] }]
+                    },
                     { model: Usuario, as: 'remitente', attributes: ['nombre'] },
                     { model: Usuario, as: 'receptor', attributes: ['nombre'] }
                 ]

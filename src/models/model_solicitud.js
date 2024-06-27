@@ -51,7 +51,7 @@ Solicitud.init({
 
 Solicitud.belongsTo(Usuario, { foreignKey: 'id_remitente', as: 'remitente' });
 Solicitud.belongsTo(Usuario, { foreignKey: 'id_receptor', as: 'receptor' });
-Solicitud.belongsTo(Proyecto, { foreignKey: 'id_proyecto'});
-Solicitud.belongsTo(EstadoSolicitud, { foreignKey: 'id_estado' });
+Solicitud.belongsTo(Proyecto, { foreignKey: 'id_proyecto', as: 'proyecto' });
+Solicitud.belongsTo(EstadoSolicitud, { foreignKey: 'id_estado', as: 'estado' });
 
 module.exports = Solicitud;

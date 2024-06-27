@@ -5,7 +5,7 @@ const solicitudControllers = require('../controllers/controllers_solicitud');
 const auth = require('../middleware/auth');
 
 // Rutas para operaciones CRUD de Solicitudes
-router.get('/', auth, solicitudControllers.getAllSolicitudes);
+router.get('/', solicitudControllers.getAllSolicitudes);
 router.get('/:id', auth, solicitudControllers.getSolicitudById);
 router.post('/', auth, solicitudControllers.createSolicitud);
 router.put('/:id', auth, solicitudControllers.updateSolicitud);
