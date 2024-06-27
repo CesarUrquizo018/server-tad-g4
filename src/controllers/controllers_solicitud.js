@@ -1,30 +1,41 @@
-// src/controllers/controllers_solicitud.js
 const Solicitud = require('../models/model_solicitud');
 const MiembrosProyecto = require('../models/model_miembros_proyecto');
 const Proyecto = require('../models/model_proyecto');
+const Usuario = require('../models/model_usuario');
 
 const solicitudController = {
 
     getAllSolicitudes: async (req, res) => {
         try {
-          const solicitudes = await Solicitud.findAll({
-            include: [
-              {
-                model: Proyecto,
-                include: [{ model: Usuario, as: 'creador', attributes: ['nombre'] }]
-              }
-            ]
-          });
-          res.json(solicitudes);
+            const solicitudes = await Solicitud.findAll({
+                include: [
+                    {
+                        model: Proyecto,
+                        include: [{ model: Usuario, as: 'creador', attributes: ['nombre'] }]
+                    },
+                    { model: Usuario, as: 'remitente', attributes: ['nombre'] },
+                    { model: Usuario, as: 'receptor', attributes: ['nombre'] }
+                ]
+            });
+            res.json(solicitudes);
         } catch (error) {
-          console.error('Error al obtener solicitudes:', error);
-          res.status(500).send({ message: 'Error al obtener solicitudes' });
+            console.error('Error al obtener solicitudes:', error);
+            res.status(500).send({ message: 'Error al obtener solicitudes' });
         }
     },
 
     getSolicitudById: async (req, res) => {
         try {
-            const solicitud = await Solicitud.findByPk(req.params.id);
+            const solicitud = await Solicitud.findByPk(req.params.id, {
+                include: [
+                    {
+                        model: Proyecto,
+                        include: [{ model: Usuario, as: 'creador', attributes: ['nombre'] }]
+                    },
+                    { model: Usuario, as: 'remitente', attributes: ['nombre'] },
+                    { model: Usuario, as: 'receptor', attributes: ['nombre'] }
+                ]
+            });
             if (solicitud) {
                 res.json(solicitud);
             } else {
@@ -99,7 +110,15 @@ const solicitudController = {
     getSolicitudesByProyectoId: async (req, res) => {
         try {
             const solicitudes = await Solicitud.findAll({
-                where: { id_proyecto: req.params.id_proyecto }
+                where: { id_proyecto: req.params.id_proyecto },
+                include: [
+                    {
+                        model: Proyecto,
+                        include: [{ model: Usuario, as: 'creador', attributes: ['nombre'] }]
+                    },
+                    { model: Usuario, as: 'remitente', attributes: ['nombre'] },
+                    { model: Usuario, as: 'receptor', attributes: ['nombre'] }
+                ]
             });
             res.json(solicitudes);
         } catch (error) {
@@ -146,7 +165,14 @@ const solicitudController = {
         try {
             const solicitudes = await Solicitud.findAll({
                 where: { id_receptor: req.user.id_usuario },
-                include: [{ model: Proyecto }]
+                include: [
+                    {
+                        model: Proyecto,
+                        include: [{ model: Usuario, as: 'creador', attributes: ['nombre'] }]
+                    },
+                    { model: Usuario, as: 'remitente', attributes: ['nombre'] },
+                    { model: Usuario, as: 'receptor', attributes: ['nombre'] }
+                ]
             });
             res.json(solicitudes);
         } catch (error) {
@@ -159,7 +185,14 @@ const solicitudController = {
         try {
             const solicitudes = await Solicitud.findAll({
                 where: { id_remitente: req.user.id_usuario },
-                include: [{ model: Proyecto }]
+                include: [
+                    {
+                        model: Proyecto,
+                        include: [{ model: Usuario, as: 'creador', attributes: ['nombre'] }]
+                    },
+                    { model: Usuario, as: 'remitente', attributes: ['nombre'] },
+                    { model: Usuario, as: 'receptor', attributes: ['nombre'] }
+                ]
             });
             res.json(solicitudes);
         } catch (error) {
