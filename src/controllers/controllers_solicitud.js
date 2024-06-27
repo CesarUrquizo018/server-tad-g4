@@ -4,7 +4,6 @@ const Proyecto = require('../models/model_proyecto');
 const Usuario = require('../models/model_usuario');
 
 const solicitudController = {
-
     getAllSolicitudes: async (req, res) => {
         try {
             const solicitudes = await Solicitud.findAll({
