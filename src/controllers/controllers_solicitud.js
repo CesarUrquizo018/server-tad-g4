@@ -4,15 +4,21 @@ const MiembrosProyecto = require('../models/model_miembros_proyecto');
 const Proyecto = require('../models/model_proyecto');
 
 const solicitudController = {
+
     getAllSolicitudes: async (req, res) => {
         try {
-            const solicitudes = await Solicitud.findAll({
-                include: [{ model: Proyecto }]
-            });
-            res.json(solicitudes);
+          const solicitudes = await Solicitud.findAll({
+            include: [
+              {
+                model: Proyecto,
+                include: [{ model: Usuario, as: 'creador', attributes: ['nombre'] }]
+              }
+            ]
+          });
+          res.json(solicitudes);
         } catch (error) {
-            console.error('Error al obtener solicitudes:', error);
-            res.status(500).send({ message: 'Error al obtener solicitudes' });
+          console.error('Error al obtener solicitudes:', error);
+          res.status(500).send({ message: 'Error al obtener solicitudes' });
         }
     },
 
