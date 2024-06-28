@@ -1,10 +1,17 @@
-//src/controllers_miembros_proyecto
 const MiembrosProyecto = require('../models/model_miembros_proyecto.js');
+const Usuario = require('../models/model_usuario.js');
 
 const miembrosProyectoController = {
     getAllMiembrosProyecto: async (req, res) => {
         try {
-            const miembrosProyecto = await MiembrosProyecto.findAll();
+            const miembrosProyecto = await MiembrosProyecto.findAll({
+                include: [
+                    {
+                        model: Usuario,
+                        attributes: ['nombre', 'email']
+                    }
+                ]
+            });
             res.json(miembrosProyecto);
         } catch (error) {
             console.error('Error al obtener miembros de proyectos:', error);
@@ -18,7 +25,13 @@ const miembrosProyectoController = {
                 where: {
                     id_usuario: req.params.id_usuario,
                     id_proyecto: req.params.id_proyecto
-                }
+                },
+                include: [
+                    {
+                        model: Usuario,
+                        attributes: ['nombre', 'email']
+                    }
+                ]
             });
             if (miembroProyecto) {
                 res.json(miembroProyecto);

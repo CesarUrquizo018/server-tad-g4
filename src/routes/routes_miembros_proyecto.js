@@ -1,4 +1,3 @@
-//src/routes/routes_miembros_proyecto
 const express = require('express');
 const router = express.Router();
 const miembrosProyectoController = require('../controllers/controllers_miembros_proyecto');
