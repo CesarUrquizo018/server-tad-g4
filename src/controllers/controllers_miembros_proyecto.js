@@ -19,6 +19,24 @@ const miembrosProyectoController = {
         }
     },
 
+    getMiembrosByProyectoId: async (req, res) => {
+        try {
+            const miembrosProyecto = await MiembrosProyecto.findAll({
+                where: { id_proyecto: req.params.id_proyecto },
+                include: [
+                    {
+                        model: Usuario,
+                        attributes: ['nombre', 'email']
+                    }
+                ]
+            });
+            res.json(miembrosProyecto);
+        } catch (error) {
+            console.error('Error al obtener miembros del proyecto:', error);
+            res.status(500).send({ message: 'Error al obtener miembros del proyecto' });
+        }
+    },
+
     getMiembrosProyectoById: async (req, res) => {
         try {
             const miembroProyecto = await MiembrosProyecto.findOne({
