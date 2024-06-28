@@ -1,4 +1,4 @@
-//src/models/model_miembros_proyecto
+// src/models/model_miembros_proyecto.js
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const Usuario = require('./model_usuario');
@@ -11,7 +11,7 @@ MiembrosProyecto.init({
         type: DataTypes.INTEGER,
         primaryKey: true,
         references: {
-            model: 'Usuario',  // Asegúrate de que el nombre del modelo es correcto
+            model: 'Usuario',
             key: 'id_usuario'
         }
     },
@@ -30,7 +30,9 @@ MiembrosProyecto.init({
     timestamps: false
 });
 
-// Definiendo explícitamente las relaciones
+MiembrosProyecto.belongsTo(Usuario, { foreignKey: 'id_usuario', as: 'usuario' });
+MiembrosProyecto.belongsTo(Proyecto, { foreignKey: 'id_proyecto', as: 'proyecto' });
+
 Usuario.belongsToMany(Proyecto, { through: MiembrosProyecto, foreignKey: 'id_usuario' });
 Proyecto.belongsToMany(Usuario, { through: MiembrosProyecto, foreignKey: 'id_proyecto' });
 

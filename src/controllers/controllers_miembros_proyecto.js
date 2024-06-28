@@ -26,6 +26,7 @@ const miembrosProyectoController = {
                 include: [
                     {
                         model: Usuario,
+                        as: 'usuario',
                         attributes: ['nombre', 'email']
                     }
                 ]
